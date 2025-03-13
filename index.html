@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>文字冒险游戏</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>抉 择</h1>
+    <div id="game-description">
+        <p>你本来已经入睡。</p>
+        <p>
+            你不知道自己为什么会出现在这里，只记得做了一个诡谲的梦，梦里你把钥匙插进一扇大门的锁孔拧动，
+            可似乎它们并不匹配，大门没有开，只有忽然刮来的一阵风。风吹过，你醒来...</p>
+        <p>
+            面前有两条路，四周和头顶是密不透风的森林，偶尔有鸟叫，混杂着那种夜晚特有的万籁俱寂式的窸窸窣窣声。
+            有光从缝隙挤过来，弱不经风的样子让你想起月亮。</p>
+        <p>
+            一种烦躁的情绪滋生，似乎出于对自由的维护，你试图拒绝一切选择，可除非<a href="forest.html">躲进森林</a>
+            ，你想不出别的什么理由能避免在这两条路之间做出尝试。</p>
+    </div>
+
+    <div>
+        <button id="choice1" onclick="makeChoice('left')">向左走</button>
+        <button id="choice2" onclick="makeChoice('right')">向右走</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

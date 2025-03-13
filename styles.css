@@ -1,0 +1,40 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #272727; /* 背景颜色为白色 */
+    color: white; /* 文字颜色设置为白色 */
+    text-align: center; /* 文本水平居中 */
+    margin: 0;
+    padding: 0;
+}
+
+#game-description {
+    text-align: left; /* 文本左对齐 */
+    text-indent: 2em; /* 首行缩进两个字符宽度 */
+    width: 60%; /* 设置容器宽度，可根据需要调整 */
+    margin-left: auto; 
+    margin-right: auto;
+    box-sizing: border-box; /* 确保边框和内边距包含在宽度内 */
+}
+
+button {
+    margin: 10px; /* 设置按钮之间的外边距为10px */
+    padding: 10px 20px; /* 设置按钮的内边距：上下10px，左右20px */
+    font-size: 16px; /* 设置按钮文字大小为16px */
+    cursor: pointer; /* 鼠标悬停时显示为手型指针，提示可点击 */
+    border-radius: 8px; /* 添加圆角效果，半径为8px */
+    border: 2px solid #000; /* 设置按钮边框为2px宽的实线，颜色为黑色 */
+    background-color: #fff; /* 设置按钮背景颜色为白色 */
+    color: #000; /* 设置按钮文字颜色为黑色 */
+    transition: background-color 0.3s ease; /* 添加背景颜色变化的过渡效果 */
+}
+
+button:hover {
+    background-color: #ddd; /* 鼠标悬停时，按钮背景颜色变为浅灰色 */
+}
+
+a {
+    font-size: 16px; /* 设置按钮文字大小为16px */
+    text-decoration: none;/* 去除修饰 */
+    color: #ffee00; /* 设置按钮文字颜色为黑色 */
+    font-weight: bold;/* 加粗文字 */
+}
