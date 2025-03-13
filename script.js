@@ -25,7 +25,7 @@ function makeChoice(choice) {
         choice2.onclick = () => makeChoice("h");
     } else if (choice === "x") {
         description.textContent = "是的，你做到了，你在群星之间，成为了它们的核心，你被一种磅礴的、通灵般的满足笼罩，\n"
-        +"你在空中上升，无数光芒在你周身飞旋，就好像是...某种结局式的演出？故事本像童话一样结束，知道你意识到真的有幽灵一样的按钮仍在纠缠着你。";
+        +"你在空中上升，无数光芒在你周身飞旋，就好像是...某种结局式的演出？故事本像童话一样结束，直到你意识到真的有幽灵一样的按钮仍在纠缠着你。";
         choice1.style.display = "none";
         choice2.textContent = "幽灵一样的按钮";
         choice2.onclick = () => makeChoice("return");
