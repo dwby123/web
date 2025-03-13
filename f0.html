@@ -8,16 +8,21 @@
 <body>
     <h1>神秘森林</h1>
     <div id="game-description">
-
-        <p>你在密林深处发现一扇古朴的大门，斑斑锈迹让你怀疑这门还能不能不打开，你想你需要一把钥匙。</p>
+        <p>你在密林深处发现一扇古朴的大门，斑斑锈迹让你怀疑这门还能不能打开，你想你需要一把钥匙。</p>
         <p>等等，钥匙，你记得自己有一把钥匙！</p>
         <p>你将<input type="text" id="nameInput" name="name">插入锁孔。</p>
     </div>
     <div>
-        <button id="ys" onclick="makeChoice()">开门</button>
+        <button id="ys">开门</button>
         <button onclick="window.location.href='forest.html'">暂时离开</button>
     </div>
     
     <script src="forest.js"></script>
+    <script>
+        // 在页面加载完成后绑定事件处理器
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById("ys").addEventListener("click", makeChoice);
+        });
+    </script>
 </body>
 </html>
