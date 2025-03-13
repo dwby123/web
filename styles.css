@@ -34,7 +34,7 @@ button:hover {
 
 a {
     font-size: 16px; /* 设置按钮文字大小为16px */
-    text-decoration: none;/* 去除修饰 */
-    color: #ffee00; /* 设置按钮文字颜色为黑色 */
-    font-weight: bold;/* 加粗文字 */
+    text-decoration: none;
+    color: #ffffff; 
+    /* font-weight: bold;*/
 }
