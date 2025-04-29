@@ -16,20 +16,24 @@
             font-family: Arial, sans-serif;
             position: relative;
             overflow: hidden;
+            flex-direction: column; /* 修改为列布局 */
         }
         .button {
-            padding: 10px 20px;
-            font-size: 18px;
+            padding: 15px 30px;
+            font-size: 20px;
             color: #fff;
             background-color: #ff69b4;
             border: none;
-            border-radius: 5px;
+            border-radius: 10px;
             cursor: pointer;
             transition: background-color 0.3s;
             z-index: 10;
+            box-shadow: 0 4px 10px rgba(255, 105, 180, 0.5);
+            margin-bottom: 200px; /* 添加按钮与消息的间距 */
         }
         .button:hover {
             background-color: #ff1493;
+            box-shadow: 0 6px 15px rgba(255, 20, 147, 0.7);
         }
         .fireworks {
             position: absolute;
@@ -44,11 +48,12 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 36px;
+            font-size: 48px;
             font-weight: bold;
             opacity: 0;
             transition: opacity 0.5s ease-in-out;
             z-index: 5;
+            text-shadow: 0 2px 5px rgba(255, 255, 255, 0.5);
         }
         .message.visible {
             opacity: 1;
@@ -57,18 +62,21 @@
 </head>
 <body>
     <button class="button" id="loveButton">点我</button>
+    <div class="message" id="loveMessage">想念小欣0次</div>
     <canvas class="fireworks" id="fireworksCanvas"></canvas>
-    <div class="message" id="loveMessage">我爱你</div>
     <script>
         const button = document.getElementById('loveButton');
         const canvas = document.getElementById('fireworksCanvas');
         const ctx = canvas.getContext('2d');
         const message = document.getElementById('loveMessage');
+        let clickCount = 0; // 用于记录点击次数
 
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
         button.addEventListener('click', () => {
+            clickCount++; // 每次点击增加1
+            message.textContent = `想念小欣${clickCount}次`; // 更新消息内容
             launchFireworks();
         });
 
@@ -110,13 +118,19 @@
                 if (particles.length > 0) {
                     requestAnimationFrame(animate);
                 } else {
-                    // 烟花结束后显示“我爱你”
+                    // 烟花结束后显示消息
                     message.classList.add('visible');
                 }
             }
 
             animate();
         }
+
+        // 在窗口大小改变时重新调整画布大小
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
     </script>
 </body>
 </html>
