@@ -1,27 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <title>文字冒险游戏</title>
-    <link rel="stylesheet" href="styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>趣味告白</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+        .button {
+            padding: 10px 20px;
+            font-size: 18px;
+            color: #fff;
+            background-color: #ff69b4;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            z-index: 10;
+        }
+        .button:hover {
+            background-color: #ff1493;
+        }
+        .fireworks {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        .message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 36px;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            z-index: 5;
+        }
+        .message.visible {
+            opacity: 1;
+        }
+    </style>
 </head>
-
 <body>
-    <h1>山谷</h1>
-    <div class="cardIn">
-        <div id="game-description">
-            <p>眼前的苍绿一路延展到山坡上，天上两只白鸟在飞，鸟鸣唤来一阵风，树木从远处开始摇晃它们的枝叶，一路挥舞到你的面前。</p>
-            <p>一条河从右手边的山坡流下，途经你，最后一头扎进森林。据说这里生活着一只<b>会使用语言的动物</b>，你为此来到山谷。</p>
-        </div>
-    </div>
+    <button class="button" id="loveButton">点我</button>
+    <canvas class="fireworks" id="fireworksCanvas"></canvas>
+    <div class="message" id="loveMessage">我爱你</div>
+    <script>
+        const button = document.getElementById('loveButton');
+        const canvas = document.getElementById('fireworksCanvas');
+        const ctx = canvas.getContext('2d');
+        const message = document.getElementById('loveMessage');
 
-    <div>
-        <button onclick="window.location.href='A_1.html'">去上游</button>
-        <button onclick="window.location.href='A_2.html'">走下游</button>
-    </div>
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 
-    <script src="script.js"></script>
+        button.addEventListener('click', () => {
+            launchFireworks();
+        });
+
+        function launchFireworks() {
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
+            const particles = [];
+
+            for (let i = 0; i < 50; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const speed = Math.random() * 5 + 2;
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                particles.push({
+                    x: centerX,
+                    y: centerY,
+                    angle: angle,
+                    speed: speed,
+                    color: color,
+                    life: Math.random() * 50 + 50
+                });
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach((particle, index) => {
+                    particle.x += Math.cos(particle.angle) * particle.speed;
+                    particle.y += Math.sin(particle.angle) * particle.speed;
+                    particle.life -= 1;
+                    if (particle.life <= 0) {
+                        particles.splice(index, 1);
+                    } else {
+                        ctx.fillStyle = particle.color;
+                        ctx.beginPath();
+                        ctx.arc(particle.x, particle.y, 2, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                });
+                if (particles.length > 0) {
+                    requestAnimationFrame(animate);
+                } else {
+                    // 烟花结束后显示“我爱你”
+                    message.classList.add('visible');
+                }
+            }
+
+            animate();
+        }
+    </script>
 </body>
-
 </html>
