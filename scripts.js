@@ -170,6 +170,7 @@ function animateFireworks() {
                 ctx.fillText(particle.text, particle.x, particle.y);
                 ctx.shadowBlur = 0;
             } else if (particle.type === 'heart') {
+                particle.rotation += particle.rotationSpeed; // 更新旋转角度
                 drawHeart(particle.x, particle.y, particle.size, particle.color, particle.rotation);
             } else {
                 ctx.fillStyle = particle.color || 'rgba(255, 255, 255, 0.8)'; // 确保有默认颜色
@@ -221,8 +222,8 @@ function launchFireworks() {
             life: Math.random() * 100 + 80,
             size: Math.random() * 5 + 1,
             type: type,
-            rotation: Math.random() * Math.PI * 2,
-            rotationSpeed: (Math.random() - 0.5) * 0.1,
+            rotation: Math.random() * Math.PI * 2, // 初始旋转角度
+            rotationSpeed: (Math.random() - 0.5) * 0.1, // 旋转速度，随机值
             alpha: 1
         });
     }
