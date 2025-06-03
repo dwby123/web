@@ -262,6 +262,9 @@ button.addEventListener('click', () => {
     } else if (clickCount === 40) {
         msg = "你好呀亲爱的🌎";
         launchTextExplosion(msg, canvas.width / 2, canvas.height / 2); // 触发文本爆发
+    } else if (clickCount === 50) {
+        msg = "不要点了宝贝，后面还没更新~";
+        launchTextExplosion(msg, canvas.width / 2, canvas.height / 2); // 触发文本爆发
     // } else if (clickCount >= 50) {
     //     msg = "别点啦，快去学习！💕";
     }
