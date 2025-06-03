@@ -1,7 +1,8 @@
 const button = document.getElementById('loveButton');
 const canvas = document.getElementById('fireworksCanvas');
 const ctx = canvas.getContext('2d');
-const message = document.getElementById('loveMessage');
+const loveMessage = document.getElementById('loveMessage');
+const welcomeMessage = document.getElementById('welcomeMessage');
 let clickCount = 0;
 let allParticles = [];
 
@@ -113,7 +114,7 @@ function animateFireworks() {
         particle.y += Math.sin(particle.angle) * particle.speed;
         particle.life -= 1;
 
-                // 更新旋转角度
+        // 更新旋转角度
         if (particle.type === 'heart') {
             particle.rotation += particle.rotationSpeed;
         }
@@ -140,7 +141,7 @@ function animateFireworks() {
     allParticles = allParticles.filter(particle => particle.life > 0);
     
     // 显示消息
-    message.classList.add('visible');
+    loveMessage.classList.add('visible');
     
     // 如果还有粒子，继续动画
     if (allParticles.length > 0) {
@@ -160,8 +161,8 @@ button.addEventListener('click', () => {
     if (clickCount === 20) msg = "超级想你！";
     if (clickCount === 30) msg = "我爱你！";
     
-    message.textContent = msg;
-    message.classList.remove('visible');
+    loveMessage.textContent = msg;
+    loveMessage.classList.remove('visible');
     
     // 发射新烟花
     launchFireworks();
@@ -214,16 +215,11 @@ document.addEventListener('DOMContentLoaded', () => {
     createHearts();
     createStars();
     
-    const welcomeMessage = getWelcomeMessage();
-    const welcomeDiv = document.createElement('div');
-    welcomeDiv.classList.add('welcome-message');
-    welcomeDiv.textContent = welcomeMessage;
-    document.body.appendChild(welcomeDiv);
+    const welcomeMsg = getWelcomeMessage();
+    welcomeMessage.textContent = welcomeMsg;
+    welcomeMessage.classList.add('visible');
 
     setTimeout(() => {
-        welcomeDiv.style.opacity = '0';
-        setTimeout(() => {
-            document.body.removeChild(welcomeDiv);
-        }, 500);
-    }, 3000);
+        welcomeMessage.classList.remove('visible');
+    }, 2000);
 });
