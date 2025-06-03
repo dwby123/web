@@ -1,27 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <title>文字冒险游戏</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>趣味告白</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
-    <h1>山谷</h1>
-    <div class="cardIn">
-        <div id="game-description">
-            <p>眼前的苍绿一路延展到山坡上，天上两只白鸟在飞，鸟鸣唤来一阵风，树木从远处开始摇晃它们的枝叶，一路挥舞到你的面前。</p>
-            <p>一条河从右手边的山坡流下，途经你，最后一头扎进森林。据说这里生活着一只<b>会使用语言的动物</b>，你为此来到山谷。</p>
-        </div>
+    <div class="loader" id="loader">
+        <div class="spinner"></div>
     </div>
-
-    <div>
-        <button onclick="window.location.href='A_1.html'">去上游</button>
-        <button onclick="window.location.href='A_2.html'">走下游</button>
-    </div>
-
-    <script src="script.js"></script>
+    <div class="background"></div>
+    <div class="hearts"></div>
+    <div class="stars"></div>
+    <div class="message" id="loveMessage"></div>
+    <canvas class="fireworks" id="fireworksCanvas"></canvas>
+    <button class="button" id="loveButton">点我</button>
+    <script src="scripts.js"></script>
 </body>
-
 </html>
