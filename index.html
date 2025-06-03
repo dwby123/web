@@ -2,23 +2,32 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>趣味告白</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>给小欣的浪漫告白</title>
     <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="loader" id="loader">
         <div class="spinner"></div>
+        <div class="loading-text">今天也很爱你...</div>
     </div>
     <div class="background"></div>
     <div class="hearts"></div>
     <div class="stars"></div>
+    <div class="sparkles"></div>
     <canvas class="fireworks" id="fireworksCanvas"></canvas>
     <div class="message-container">
         <div class="welcome-message" id="welcomeMessage"></div>
+        <br><br><br><br><br><br><br>
         <div class="message" id="loveMessage"></div>
     </div>
-    <button class="button" id="loveButton">点我</button>
+    <button class="button" id="loveButton">
+        <span class="button-text">点我</span>
+        <span class="button-heart">❤</span>
+    </button>
+    <audio id="clickSound" src="https://assets.mixkit.co/sfx/preview/mixkit-positive-interface-beep-221.mp3" preload="auto"></audio>
+    <audio id="fireworkSound" src="https://assets.mixkit.co/sfx/preview/mixkit-explosion-with-debris-1683.mp3" preload="auto"></audio>
     <script src="scripts.js"></script>
 </body>
 </html>
