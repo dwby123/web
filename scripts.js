@@ -1,15 +1,15 @@
-const button = document.getElementById('loveButton');
 const canvas = document.getElementById('fireworksCanvas');
 const ctx = canvas.getContext('2d');
 const loveMessage = document.getElementById('loveMessage');
-const welcomeMessage = document.getElementById('welcomeMessage');
-const clickSound = document.getElementById('clickSound');
-const fireworkSound = document.getElementById('fireworkSound');
 const sparklesContainer = document.querySelector('.sparkles');
+const heartsContainer = document.querySelector('.hearts');
+const starsContainer = document.querySelector('.stars');
+const background = document.querySelector('.background'); // 添加背景选择器
 
 let clickCount = 0;
 let allParticles = [];
 let resizeTimeout;
+let fireworksEnabled = false;
 
 // 初始化画布大小
 function initCanvas() {
@@ -21,8 +21,6 @@ initCanvas();
 
 // 创建漂浮的心形
 function createHearts() {
-    const heartsContainer = document.querySelector('.hearts');
-
     for (let i = 0; i < 25; i++) {
         setTimeout(() => {
             const heart = document.createElement('div');
@@ -33,7 +31,6 @@ function createHearts() {
             heart.style.animationDuration = `${Math.random() * 15 + 10}s`;
             heart.style.opacity = Math.random() * 0.6 + 0.4;
             const size = Math.random() * 25 + 15;
-            // 设置CSS变量控制尺寸
             heart.style.setProperty('--heart-size', `${size}px`);
             heart.style.width = `${size}px`;
             heart.style.height = `${size}px`;
@@ -44,8 +41,6 @@ function createHearts() {
 
 // 创建闪烁星星
 function createStars() {
-    const starsContainer = document.querySelector('.stars');
-
     for (let i = 0; i < 200; i++) {
         const star = document.createElement('div');
         star.classList.add('star');
@@ -56,6 +51,7 @@ function createStars() {
         const size = Math.random() * 3 + 1;
         star.style.width = `${size}px`;
         star.style.height = `${size}px`;
+        star.style.opacity = Math.random() * 0.7 + 0.3; // 修改这里，让星星的透明度变化更平滑
         starsContainer.appendChild(star);
     }
 }
@@ -63,36 +59,24 @@ function createStars() {
 // 创建弥散光点
 function createSparkles() {
     for (let i = 0; i < 40; i++) {
-        setTimeout(() => {
-            const sparkle = document.createElement('div');
-            sparkle.classList.add('sparkle');
-            
-            // 随机位置
-            const centerX = Math.random() * window.innerWidth;
-            const centerY = Math.random() * window.innerHeight;
-            
-            // 随机弥散方向
-            const angle = Math.random() * Math.PI * 2;
-            const distance = Math.random() * 200 + 100;
-            const tx = Math.cos(angle) * distance;
-            const ty = Math.sin(angle) * distance;
-            
-            sparkle.style.left = `${centerX}px`;
-            sparkle.style.top = `${centerY}px`;
-            sparkle.style.setProperty('--tx', `${tx}px`);
-            sparkle.style.setProperty('--ty', `${ty}px`);
-            sparkle.style.animationDuration = `${Math.random() * 2 + 1}s`;
-            sparkle.style.opacity = Math.random() * 0.7 + 0.3;
-            const size = Math.random() * 5 + 2;
-            sparkle.style.width = `${size}px`;
-            sparkle.style.height = `${size}px`;
-            sparklesContainer.appendChild(sparkle);
-            
-            // 光点消失后移除
-            setTimeout(() => {
-                sparkle.remove();
-            }, (parseFloat(sparkle.style.animationDuration) * 1000));
-        }, i * 200);
+        const sparkle = document.createElement('div');
+        sparkle.classList.add('sparkle');
+        const centerX = Math.random() * window.innerWidth;
+        const centerY = Math.random() * window.innerHeight;
+        const angle = Math.random() * Math.PI * 2;
+        const distance = Math.random() * 200 + 100;
+        const tx = Math.cos(angle) * distance;
+        const ty = Math.sin(angle) * distance;
+        sparkle.style.left = `${centerX}px`;
+        sparkle.style.top = `${centerY}px`;
+        sparkle.style.setProperty('--tx', `${tx}px`);
+        sparkle.style.setProperty('--ty', `${ty}px`);
+        sparkle.style.animationDuration = `${Math.random() * 2 + 1}s`;
+        sparkle.style.opacity = Math.random() * 0.7 + 0.3;
+        const size = Math.random() * 5 + 2;
+        sparkle.style.width = `${size}px`;
+        sparkle.style.height = `${size}px`;
+        sparklesContainer.appendChild(sparkle);
     }
 }
 
@@ -104,8 +88,6 @@ function drawHeart(x, y, size, color, rotation) {
     ctx.translate(x, y);
     ctx.rotate(rotation);
     ctx.scale(size, size);
-    
-    // 心形路径
     ctx.moveTo(0, 0);
     ctx.bezierCurveTo(0, -2, -2, -3, -3, -3);
     ctx.bezierCurveTo(-5, -3, -5, 0, -5, 1);
@@ -113,7 +95,6 @@ function drawHeart(x, y, size, color, rotation) {
     ctx.bezierCurveTo(2, 5, 5, 3, 5, 1);
     ctx.bezierCurveTo(5, 0, 5, -3, 3, -3);
     ctx.bezierCurveTo(2, -3, 0, -2, 0, 0);
-    
     ctx.fill();
     ctx.restore();
 }
@@ -122,8 +103,7 @@ function drawHeart(x, y, size, color, rotation) {
 function launchTextExplosion(text, x, y) {
     const particles = [];
     const particleCount = 50;
-    const color = 'rgba(255, 255, 255, 0.8)'; // 修改为带透明度的白色
-
+    const color = 'rgba(255, 255, 255, 0.8)';
     for (let i = 0; i < particleCount; i++) {
         const angle = Math.random() * Math.PI * 2;
         const speed = Math.random() * 8 + 4;
@@ -136,44 +116,39 @@ function launchTextExplosion(text, x, y) {
             life: Math.random() * 100 + 80,
             size: Math.random() * 3 + 1,
             alpha: 0.8,
-            color: color // 使用带透明度的白色
+            color: color
         });
     }
-
     allParticles = allParticles.concat(particles);
-
     if (!window.fireworksAnimationRunning) {
         animateFireworks();
         window.fireworksAnimationRunning = true;
     }
 }
 
-// 烟花动画更新，支持文本粒子
+// 烟花动画更新
 function animateFireworks() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
     for (let i = 0; i < allParticles.length; i++) {
         const particle = allParticles[i];
         particle.x += Math.cos(particle.angle) * particle.speed;
         particle.y += Math.sin(particle.angle) * particle.speed;
         particle.life -= 1;
         particle.alpha = particle.life / 100;
-
         if (particle.life > 0) {
             ctx.globalAlpha = particle.alpha;
-            
             if (particle.text) {
                 ctx.shadowBlur = 20;
                 ctx.shadowColor = 'rgba(255, 255, 255, 0.8)';
-                ctx.fillStyle = particle.color || 'rgba(255, 255, 255, 0.8)'; // 确保有默认颜色
+                ctx.fillStyle = particle.color;
                 ctx.font = `${particle.size * 10}px Arial`;
                 ctx.fillText(particle.text, particle.x, particle.y);
                 ctx.shadowBlur = 0;
             } else if (particle.type === 'heart') {
-                particle.rotation += particle.rotationSpeed; // 更新旋转角度
+                particle.rotation += particle.rotationSpeed;
                 drawHeart(particle.x, particle.y, particle.size, particle.color, particle.rotation);
             } else {
-                ctx.fillStyle = particle.color || 'rgba(255, 255, 255, 0.8)'; // 确保有默认颜色
+                ctx.fillStyle = particle.color;
                 ctx.beginPath();
                 ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
                 ctx.fill();
@@ -181,9 +156,7 @@ function animateFireworks() {
             ctx.globalAlpha = 1;
         }
     }
-    
     allParticles = allParticles.filter(particle => particle.life > 0);
-    
     if (allParticles.length > 0) {
         requestAnimationFrame(animateFireworks);
     } else {
@@ -192,105 +165,124 @@ function animateFireworks() {
 }
 
 // 发射烟花
-function launchFireworks() {
-    try {
-        fireworkSound.currentTime = 0;
-        fireworkSound.play();
-    } catch (e) {
-        console.log("Audio play failed:", e);
-    }
-    
-    const centerX = Math.random() * canvas.width;
-    const centerY = Math.random() * canvas.height;
+function launchFireworks(x, y) {
     const colors = ['#ff85c0', '#ff5c9d', '#ff3d7f', '#ffffa5', '#ffd5ff', '#a5ffff'];
     const particles = [];
-    
-    // 随机选择烟花类型
     const type = Math.random() > 0.5 ? 'circle' : 'heart';
-    const particleCount = Math.floor(Math.random() * 120) + 100; // 100-220个粒子
-    
+    const particleCount = Math.floor(Math.random() * 120) + 100;
     for (let i = 0; i < particleCount; i++) {
         const angle = Math.random() * Math.PI * 2;
-        const speed = Math.random() * 8 + 4;
+        const speed = Math.random() * 6 + 2; // 修改这里，让烟花速度更慢
         const color = colors[Math.floor(Math.random() * colors.length)];
         particles.push({
-            x: centerX,
-            y: centerY,
+            x: x,
+            y: y,
             angle: angle,
             speed: speed,
             color: color,
             life: Math.random() * 100 + 80,
-            size: Math.random() * 5 + 1,
+            size: Math.random() * 3 + 1, // 修改这里，让烟花更小
             type: type,
-            rotation: Math.random() * Math.PI * 2, // 初始旋转角度
-            rotationSpeed: (Math.random() - 0.5) * 0.1, // 旋转速度，随机值
+            rotation: Math.random() * Math.PI * 2,
+            rotationSpeed: (Math.random() - 0.5) * 0.1,
             alpha: 1
         });
     }
-
-    // 将新粒子添加到全局数组
     allParticles = allParticles.concat(particles);
-
-    // 如果动画未运行，则启动动画
     if (!window.fireworksAnimationRunning) {
         animateFireworks();
         window.fireworksAnimationRunning = true;
     }
 }
 
-// 点击事件处理
-button.addEventListener('click', () => {
-    try {
-        clickSound.currentTime = 0;
-        clickSound.play();
-    } catch (e) {
-        console.log("Audio play failed:", e);
-    }
-    
-    clickCount++;
-    
-    // 根据点击次数显示不同消息
-    let msg = `今天想了小欣${clickCount}次`;
-    if (clickCount === 10) {
-        msg = "好想见你💕";
-        launchTextExplosion(msg, canvas.width / 2, canvas.height / 2); // 触发文本爆发
-    } else if (clickCount === 20) {
-        msg = "超级想你💘";
-        launchTextExplosion(msg, canvas.width / 2, canvas.height / 2); // 触发文本爆发
-    } else if (clickCount === 30) {
-        msg = "爱你💖";
-        launchTextExplosion(msg, canvas.width / 2, canvas.height / 2); // 触发文本爆发
-    } else if (clickCount === 40) {
-        msg = "你好呀亲爱的🌎";
-        launchTextExplosion(msg, canvas.width / 2, canvas.height / 2); // 触发文本爆发
-    } else if (clickCount === 50) {
-        msg = "不要点了宝贝，后面还没更新~";
-        launchTextExplosion(msg, canvas.width / 2, canvas.height / 2); // 触发文本爆发
-    // } else if (clickCount >= 50) {
-    //     msg = "别点啦，快去学习！💕";
-    }
+// 对话逻辑
+const dialogues = [
+    { text: "小欣你好呀", effects: [] },
+    { text: "今天学习辛苦了~", effects: [] },
+    { text: "谁家宝贝这么棒呀", effects: [] },
+    { text: "当然是我家的！", effects: [] },
+    { text: "你知道吗", effects: ["showBackground"] }, 
+    { text: "每门学科的知识图谱", effects: [] },
+    { text: "把它可视化之后", effects: [] },
+    { text: "都是一个完整的宇宙", effects: [] },
+    { text: "学习恰好就是\n创造这宇宙的过程", effects: [] },
+    { text: "亲爱的", effects: [] },
+    { text: "我们今天点亮了星星诶！", effects: ["createStars"] },
+    { text: "真了不起", effects: [] },
+    { text: "你看这夜空里的光点", effects: [] },
+    { text: "无边际的宇宙里", effects: [] },
+    { text: "漂浮着的安静的天体", effects: [] },
+    { text: "它们是被你照亮的", effects: [] },
+    { text: "人就这样勾勒着自己的宇宙", effects: [] },
+    { text: "宝贝", effects: [] },
+    { text: "因为白天充实地学习", effects: [] },
+    { text: "而在夜晚感到满足", effects: [] },
+    { text: "因为又掌握了一点\n关于这个世界的事情", effects: [] },
+    { text: "而更清晰地感受到自己的存在", effects: [] },
+    { text: "我希望你能\n体验到这样的快乐\n亲爱的", effects: [] },
+    { text: "你一下子就做到了诶", effects: ["createSparkles"] },
+    { text: "你注意到它们在动了吗？", effects: [] },
+    { text: "你的星星也成为它们自己了", effects: [] },
+    { text: "好喜欢你", effects: ["createHearts"] },
+    { text: "看到这些漂浮的心了吗", effects: [] },
+    { text: "亲爱的", effects: [] },
+    { text: "你辛苦了一天", effects: [] },
+    { text: "不光可以背17个病", effects: [] },
+    { text: "还可以壮大你的宇宙", effects: [] },
+    { text: "让我的爱意", effects: [] },
+    { text: "也有了位置", effects: [] },
+    { text: "现在这些心脏\n也自有它们的生命了", effects: [] },
+    { text: "只剩我", effects: [] },
+    { text: "想你", effects: [] },
+    { text: "想你想你", effects: [] },
+    { text: "想你想你想你", effects: [] },
+    { text: "想你又能咋办嘛?！", effects: [] },
+    { text: "不如", effects: [] },
+    { text: "我们来放烟花吧宝贝！", effects: [] },
+    { text: "接下来", effects: [] },
+    { text: "用你的手指触碰你的屏幕", effects: [] },
+    { text: "庆祝无论哪一次细小的胜利", effects: [] },
+    { text: "这宇宙只属于你", effects: ["unlockFireworks"] },
+    { text: "无论你想它在哪里开花~", effects: ["unlockFireworks"] }
+];
 
-    // 更新中心示爱消息
-    loveMessage.textContent = msg;
+function showNextDialogue() {
+    const currentDialogue = dialogues[clickCount];
+    if (!currentDialogue) return;
+
+    loveMessage.innerHTML = currentDialogue.text.replace(/\n/g, '<br>');
     loveMessage.classList.add('visible');
 
-    // 发射新烟花
-    launchFireworks();
-    createSparkles();
-    
-    // 点击按钮动画
-    button.style.transform = 'scale(0.9)';
-    setTimeout(() => {
-        button.style.transform = 'scale(1.1)';
-    }, 100);
-});
+    currentDialogue.effects.forEach(effect => {
+        if (effect === "createStars") createStars();
+        else if (effect === "createHearts") createHearts();
+        else if (effect === "createSparkles") createSparkles();
+        else if (effect === "unlockFireworks") fireworksEnabled = true;
+        else if (effect === "showBackground") {
+            background.style.display = 'block';
+            background.style.opacity = '0';
+            setTimeout(() => {
+                background.style.opacity = '1';
+            }, 100); // 添加渐变过渡效果
+        }
+    });
+}
 
-// 触摸事件支持
-button.addEventListener('touchstart', () => {
-    button.style.transform = 'scale(0.9)';
-});
-button.addEventListener('touchend', () => {
-    button.style.transform = 'scale(1.1)';
+// 点击事件处理
+document.addEventListener('click', (event) => {
+    if (clickCount >= dialogues.length) {
+        if (fireworksEnabled) {
+            const x = event.clientX;
+            const y = event.clientY;
+            launchFireworks(x, y);
+        }
+    } else {
+        loveMessage.classList.remove('visible');
+        setTimeout(() => {
+            showNextDialogue();
+            clickCount++;
+        }, 1000); // 修改这里，增加文字切换时间
+    }
 });
 
 // 窗口大小调整
@@ -311,39 +303,4 @@ window.addEventListener('load', () => {
     setTimeout(() => {
         loader.style.display = 'none';
     }, 1000);
-});
-
-// 个性化欢迎消息
-function getWelcomeMessage() {
-    const now = new Date();
-    const hour = now.getHours();
-    let message = '';
-
-    if (hour < 5) {
-        message = '小欣凌晨好~ 快睡觉！💤';
-    } else if (hour < 12) {
-        message = '小欣早上好~ 今天也很爱你🌞';
-    } else if (hour < 18) {
-        message = '小欣下午好~ 想你了💕';
-    } else {
-        message = '小欣晚上好~ 🌙';
-    }
-
-    return message;
-}
-
-// DOM加载完成后初始化
-document.addEventListener('DOMContentLoaded', () => {
-    createHearts();
-    createStars();
-    createSparkles();
-    setInterval(createSparkles, 2000);
-    
-    const welcomeMsg = getWelcomeMessage();
-    welcomeMessage.textContent = welcomeMsg;
-    welcomeMessage.classList.add('visible');
-
-    setTimeout(() => {
-        welcomeMessage.classList.remove('visible');
-    }, 3000);
 });

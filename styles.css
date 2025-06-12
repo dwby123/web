@@ -74,100 +74,14 @@ body {
     animation: gradient 20s ease infinite;
     z-index: -1;
     will-change: background-position;
+    display: none; /* 初始隐藏背景 */
+    transition: opacity 2s ease; /* 添加渐变过渡效果 */
 }
 
 @keyframes gradient {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
-}
-
-.button {
-    position: relative;
-    padding: 18px 36px;
-    font-size: 32px;
-    color: #fff;
-    background: linear-gradient(135deg, var(--pink-light), var(--pink-dark));
-    border: none;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    z-index: 10;
-    box-shadow: 0 6px 15px rgba(255, 20, 147, 0.5);
-    margin-top: 60vh;
-    font-weight: bold;
-    overflow: hidden;
-    animation: bounce 2s infinite, glow 2s infinite alternate;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.button-text {
-    position: relative;
-    z-index: 2;
-}
-
-.button-heart {
-    position: relative;
-    z-index: 2;
-    margin-left: 10px;
-    transform: scale(1);
-    animation: heartbeat 1.5s infinite;
-}
-
-.button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, var(--pink-dark), var(--pink-light));
-    z-index: 1;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.button:hover {
-    transform: scale(1.1);
-    box-shadow: 0 8px 20px rgba(255, 20, 147, 0.8);
-}
-
-.button:hover::before {
-    opacity: 1;
-}
-
-.button:active {
-    transform: scale(0.95);
-    box-shadow: 0 4px 10px rgba(255, 20, 147, 0.6);
-}
-
-@keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-15px); }
-}
-
-@keyframes glow {
-    0% { box-shadow: 0 0 10px rgba(255, 105, 180, 0.5); }
-    100% { box-shadow: 0 0 20px rgba(255, 20, 147, 0.8); }
-}
-
-@keyframes heartbeat {
-    0% { transform: scale(1); }
-    25% { transform: scale(1.1); }
-    50% { transform: scale(1); }
-    75% { transform: scale(1.1); }
-    100% { transform: scale(1); }
-}
-
-@keyframes pulseText {
-    0%, 100% {
-        font-size: 40px;
-    }
-    50% {
-        font-size: 45px;
-    }
 }
 
 .fireworks {
@@ -191,32 +105,17 @@ body {
     max-width: 800px;
 }
 
-.welcome-message {
-    font-size: 30px;
-    font-weight: bold;
-    color: #fff;
-    text-shadow: var(--text-glow);
-    opacity: 0;
-    transition: all 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    margin-bottom: 20px;
-    font-family: 'Heebo', sans-serif;
-}
-
-.welcome-message.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-
 .message {
-    font-size: 40px;
+    font-size: 28px; /* 修改这里，缩小字号 */
     font-weight: bold;
     color: #fff;
     text-shadow: var(--text-glow);
     opacity: 0;
-    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: all 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* 修改这里，增加过渡时间 */
     transform: translateY(20px);
     font-family: 'Heebo', sans-serif;
     animation: pulseText 2s infinite; /* 应用跳动动画 */
+    word-wrap: break-word; /* 添加换行处理 */
 }
 
 .message.visible {
@@ -347,9 +246,10 @@ body {
     filter: drop-shadow(0 0 3px white);
 }
 
+/* 弥散光点 */
 @keyframes sparkle-disperse {
     0% {
-        transform: translate(0, 0) scale(1);
+        transform: translate(0, 0) scale();
         opacity: 1;
     }
     100% {
