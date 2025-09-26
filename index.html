@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>房间</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- 加载动画 -->
+    <div class="loader" id="loader">
+        <div class="spinner"></div>
+        <div class="loading-text">今天也很爱你...</div>
+    </div>
+    <!-- 初始化 -->
+    <div class="background"></div>
+    <div class="hearts"></div>
+    <div class="stars"></div>
+    <div class="sparkles"></div>
+
+    <canvas class="fireworks" id="fireworksCanvas"></canvas>
+    <div class="message-container">
+        <!-- 放在 #loveMessage 里，默认带 visible -->
+        <div class="message visible" id="loveMessage">早安，亲爱的</div>
+        <div class="message" id="loveMessage"></div>
+    </div>
+    
+    <script src="scripts.js"></script>
+
+    <!-- 背景音乐：巴赫《G 大调前奏曲》公版录音
+    <audio id="bgm" autoplay loop muted playsinline>
+    <source src="https://files.freemusicarchive.org/storage-freemusicarchive-org/music/ccCommunity/Kai_Engel/Satin_Kai_Engel_-_01_-_Moonlight_Reprise.mp3"  type="audio/mpeg">
+    您的浏览器不支持 audio 标签。
+    </audio> -->
+
+</body>
+</html>
