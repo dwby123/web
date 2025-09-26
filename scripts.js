@@ -276,24 +276,28 @@ const dialogues = [
     { text: "喜欢你笑", effects: [] },
     { text: "那表情勾画人类清晰的轮廓", effects: [] },
     { text: "我喜欢你是舒展的。", effects: [] },
-    { text: "世界正在下雨", effects: [] },
-    { text: "我们根系生长", effects: ["createHearts"] },
-    { text: "又是这些漂浮的心", effects: [] },
     { text: "亲爱的", effects: [] },
+    { text: "只有雨让城市倾斜", effects: [] },
+    { text: "于是我", effects: [] },
+    { text: "在大陆上跌落", effects: [] },
+    { text: "滑向你", effects: ["createHearts"] },
+    { text: "...", effects: ["createHearts"] },
+    { text: "看这些的心", effects: [] },
     { text: "上一个网页它们也这样漂浮", effects: [] },
-    { text: "一个矩形，两个圆形", effects: [] },
     { text: "一颗心的底层代码", effects: [] },
+    { text: "一个矩形，两个圆形", effects: [] },
     { text: "不过是最基础的形态", effects: [] },
-    { text: "由你自由拼接", effects: [] },
+    { text: "任你自由创作", effects: [] },
     { text: "你要它是心脏", effects: [] },
     { text: "它便是了", effects: ["unlockFireworks"] },
+    { text: "爱你", effects: [] },
     { text: "今天也玩得开心，宝贝", effects: ["unlockFireworks"] },
 ];
 
 /* ========== 文字切换 + 随机变化 ========== */
 function randomizeMessageStyle() {
     const msg = document.getElementById('loveMessage');
-    const fs = 22 + Math.floor(Math.random() * 5 - 2);        // 20-24px
+    const fs = 22 + Math.floor(Math.random() * 5 - 1);
     const weight = Math.random() > .5 ? 700 : 400;            // 粗/正常
     const hue = Math.floor(Math.random() * 360);              // 0-359°
     const shadow = `
